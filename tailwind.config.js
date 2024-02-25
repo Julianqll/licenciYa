@@ -4,7 +4,11 @@ module.exports = {
       files: ["*.html", "./src/**/*.rs"],
     },
     theme: {
-      extend: {},
+      extend: {
+        colors: {
+          'licenciya-blue': '#007BFF',
+        },
+      },
     },
     plugins: [],
   }

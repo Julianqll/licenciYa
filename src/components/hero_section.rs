@@ -1,5 +1,4 @@
 use leptos::*;
-
 /// A parameterized incrementing button
 #[component]
 pub fn HeroSection() -> impl IntoView {
@@ -12,8 +11,10 @@ pub fn HeroSection() -> impl IntoView {
                 <nav class="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
                 <div class="flex lg:flex-1">
                     <a href="#" class="-m-1.5 p-1.5">
-                    <span class="sr-only">Your Company</span>
-                    <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt=""/>
+                    <span class="sr-only">LicenciYa</span>
+                    <img
+                    src="assets/logo.svg"
+                    />
                     </a>
                 </div>
                 <div class="flex lg:hidden">
@@ -86,23 +87,23 @@ pub fn HeroSection() -> impl IntoView {
             </header>
 
             <div class="relative isolate px-6 lg:px-8 h-screen flex justify-center items-center">
-                <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
+                <div class="mx-auto max-w-2xl py-32 my-60 sm:py-48 lg:py-56">
                 <div class="hidden sm:mb-8 sm:flex sm:justify-center">
-                    <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                    <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-licenciya-blue ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                     Practica para tu examen teórico de forma entretenida
                     </div>
                 </div>
                 <div class="text-center">
-                    <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">"¿Listo para prepararte para tu examen teórico de manejo?"</h1>
-                    <p class="mt-6 text-lg leading-8 text-gray-600">Con LicenciYa, puedes estudiar de manera efectiva y entretenida. Nuestra aplicación te ofrece diferentes niveles de dificultad para que puedas aprender a tu propio ritmo.</p>
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900 md:text-5xl sm:text-6xl">"¿Listo para rendir tu examen teórico de manejo?"</h1>
+                    <p class="mt-6 text-md md:text-md sm:text-lg leading-8 text-gray-600">Con LicenciYa, puedes estudiar de manera efectiva y entretenida. Nuestra aplicación te ofrece diferentes niveles de dificultad para que puedas aprender a tu propio ritmo.</p>
                     <div class="mt-10 flex items-center justify-center gap-x-6">
-                    <a href="#" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">"¡Comienza ahora mismo!"</a>
+                    <a href="#" class="rounded-md bg-licenciya-blue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">"¡Comienza ahora mismo!"</a>
                     </div>
                 </div>
                 </div>
             </div>
             </div>
-            <footer class="bg-gray-900 text-white py-4 px-6 lg:px-8">
+            <footer class="bg-licenciya-blue text-white py-4 px-6 lg:px-8">
             <div class="container mx-auto flex justify-between items-center">
             <div>
                     <p class="text-sm font-semibold">LicenciYa</p>
