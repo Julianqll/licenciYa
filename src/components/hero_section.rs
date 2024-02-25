@@ -23,14 +23,14 @@ pub fn HeroSection() -> impl IntoView {
                         class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
                         on:click=move |_| setMobileMenuOpen(true)
                     >
-                    <span class="sr-only">Open main menu</span>
+                    <span class="sr-only">LicenciYa menu</span>
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                     </svg>
                     </button>
                 </div>
                 <div class="hidden lg:flex lg:gap-x-12">
-                    <a href="#" class="text-sm font-semibold leading-6 text-gray-900">Inicio</a>
+                    <a href="#home" class="text-sm font-semibold leading-6 text-gray-900">Inicio</a>
                 </div>
                 <div class="hidden lg:flex lg:flex-1 lg:justify-end">
                     //<a href="#" class="text-sm font-semibold leading-6 text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
@@ -47,7 +47,7 @@ pub fn HeroSection() -> impl IntoView {
                                 <div class="flex items-center justify-between">
                                 <a href="#" class="-m-1.5 p-1.5">
                                     <span class="sr-only">LicenciYa</span>
-                                    <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt=""/>
+                                    <img class="h-8 w-auto" src="assets/logo.svg" alt=""/>
                                 </a>
                                 <button 
                                     type="button" 
@@ -63,14 +63,11 @@ pub fn HeroSection() -> impl IntoView {
                                 <div class="mt-6 flow-root">
                                 <div class="-my-6 divide-y divide-gray-500/10">
                                     <div class="space-y-2 py-6">
-                                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Product</a>
-                                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>
-                                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>
-                                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>
+                                    <a href="#home" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Inicio</a>
                                     </div>
-                                    <div class="py-6">
-                                    <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
-                                    </div>
+                                    //<div class="py-6">
+                                    //<a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>
+                                    //</div>
                                 </div>
                                 </div>
                             </div>
@@ -86,7 +83,7 @@ pub fn HeroSection() -> impl IntoView {
                 }}
             </header>
 
-            <div class="relative isolate px-6 lg:px-8 h-screen flex justify-center items-center">
+            <div id="home" class="relative isolate px-6 lg:px-8 h-screen flex justify-center items-center">
                 <div class="mx-auto max-w-2xl py-32 my-60 sm:py-48 lg:py-56">
                 <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                     <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-licenciya-blue ring-1 ring-gray-900/10 hover:ring-gray-900/20">
