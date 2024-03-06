@@ -2,7 +2,6 @@ use leptos::*;
 /// A parameterized incrementing button
 #[component]
 pub fn HeroSection() -> impl IntoView {
-    let (mobileMenuOpen, setMobileMenuOpen) = create_signal(false);
 
     view! {
         <div id="home" class="relative isolate px-6 lg:px-8 h-screen flex justify-center items-center">
