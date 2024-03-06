@@ -8,6 +8,7 @@ mod pages;
 
 // Top-Level pages
 use crate::pages::home::Home;
+use crate::pages::not_found::NotFound;
 use crate::pages::simulacro::Simulacro;
 
 /// An app router which renders the homepage and handles 404's
@@ -26,7 +27,7 @@ pub fn App() -> impl IntoView {
         />
 
         // sets the document title
-        <Title text="Welcome to Leptos CSR"/>
+        <Title text="Licenciya"/>
         <Stylesheet id="leptos" href="/style/output.css"/>
 
         // injects metadata in the <head> of the page
@@ -53,6 +54,7 @@ pub fn App() -> impl IntoView {
                 <Routes>
                     <Route path="/" view=Home />
                     <Route path="/simulacro" view=Simulacro />
+                    <Route path="/*" view=NotFound />
                 </Routes>
             </Router>
 
