@@ -53,7 +53,7 @@ pub fn App() -> impl IntoView {
             <Router>
                 <Routes>
                     <Route path="/" view=Home />
-                    <Route path="/simulacro" view=Simulacro />
+                    <Route path="/simulacro/:type" view=Simulacro />
                     <Route path="/*" view=NotFound />
                 </Routes>
             </Router>
