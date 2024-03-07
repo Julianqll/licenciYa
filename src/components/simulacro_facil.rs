@@ -1,8 +1,23 @@
 use leptos::*;
+use wasm_bindgen::JsValue;
+
+use crate::api::preguntas::preguntas;
 /// A parameterized incrementing button
 #[component]
 pub fn SimulacroFacil() -> impl IntoView {
+    let once= create_resource(|| (), |_| async move {
+        // Llama a tu función preguntas para cargar los datos
+        let repo = "Questions".to_string(); // Inserta el nombre de tu repositorio aquí
+        let result = preguntas(repo).await;
 
+        match result {
+            Ok(data) => Some(data),
+            Err(err) => {
+                web_sys::console::error_1(&err);
+                None
+            }
+        }
+    });
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
             <div class="bg-white h-full">
@@ -14,7 +29,10 @@ pub fn SimulacroFacil() -> impl IntoView {
                         Nivel Fácil
                         </div>
                     </div>
-
+                    {move || match once.get() {
+                        None => view! { <p>"Loading..."</p> }.into_view(),
+                        Some(data) =>  view! { <div>{ data }</div> }.into_view()                   
+                    }}
                     <div class="text-center">
                         <h1 class="text-3xl font-bold tracking-tight text-gray-900 md:text-5xl sm:text-6xl">"40:00:00"</h1>
                         <p class="mt-6 text-md md:text-md sm:text-lg leading-8 text-gray-600">Este es el texto de la pregunta, pregunta pregunta pregunta.</p>
