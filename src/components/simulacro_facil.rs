@@ -1,7 +1,7 @@
 use leptos::*;
 use wasm_bindgen::JsValue;
 
-use crate::api::preguntas::preguntas;
+use crate::{api::preguntas::preguntas, resources::question::Question};
 /// A parameterized incrementing button
 #[component]
 pub fn SimulacroFacil() -> impl IntoView {
@@ -29,14 +29,29 @@ pub fn SimulacroFacil() -> impl IntoView {
                         Nivel Fácil
                         </div>
                     </div>
-                    {move || match once.get() {
-                        None => view! { <p>"Loading..."</p> }.into_view(),
-                        Some(data) =>  view! { <div>{ data }</div> }.into_view()                   
-                    }}
                     <div class="text-center">
                         <h1 class="text-3xl font-bold tracking-tight text-gray-900 md:text-5xl sm:text-6xl">"40:00:00"</h1>
-                        <p class="mt-6 text-md md:text-md sm:text-lg leading-8 text-gray-600">Este es el texto de la pregunta, pregunta pregunta pregunta.</p>
-                        <div class="mt-10 grid grid-cols-1 gap-y-6">
+                        {
+                            move || match once.get() {
+                            None => view! { <p>"Loading..."</p> }.into_view(),
+                            Some(json_data) => {
+                                //TODO:handler error here
+                                let questions: Vec<Question> = serde_json::from_str(json_data.unwrap().as_ref()).unwrap();
+                    
+    
+                                let view_questions  = questions.into_iter()
+                                    .map(|question| view! 
+                                        {
+                                            <p>{question.title}</p>
+                                        })
+                                        .collect::<Vec<_>>();
+    
+                    
+                                // Retorna la vista que deseas mostrar una vez que los datos estén disponibles
+                                view! { <div>{ view_questions }</div> }.into_view()
+                            }                    
+                        }
+                    }                        <div class="mt-10 grid grid-cols-1 gap-y-6">
                             <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta uno</button>
                             <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta dos</button>
                             <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta tres</button>
