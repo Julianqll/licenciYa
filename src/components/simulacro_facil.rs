@@ -73,7 +73,14 @@ pub fn SimulacroFacil() -> impl IntoView {
                                 }.into_view(),
                                 1 => {
                                     let question = &questions()[q_index.get()];
-                                    view! {<p>{&question.title}</p>}.into_view()
+                                    let view_answers  = question.answerList.clone().into_iter()
+                                    .map(|answer| view! 
+                                        {
+                                            <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{answer.body}</button>
+                                        })
+                                        .collect::<Vec<_>>();
+    
+                                    view! { {view_answers}  }.into_view()
                                 }, 
                                 2 => view! {
                                     <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Regresar al inicio</button>

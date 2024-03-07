@@ -3,7 +3,7 @@ use serde_json;
 
 use super::answer::Answer;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 pub struct Question {
     pub id: i32,
     pub title: String,
