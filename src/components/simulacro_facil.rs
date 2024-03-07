@@ -1,4 +1,5 @@
 use leptos::*;
+use web_sys::MouseEvent;
 
 use crate::{api::preguntas::preguntas, resources::question::Question};
 /// A parameterized incrementing button
@@ -19,7 +20,7 @@ pub fn SimulacroFacil() -> impl IntoView {
     });
     
     let questions = {
-        match load_questions.get() {
+        move || match load_questions.get() {
             None => Vec::new(), // Vector vacío si no hay datos
             Some(json_data) => {
                 // Manejar el error aquí
@@ -36,6 +37,8 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (q_index, set_q_index) = create_signal(0);
     let (form_state, set_form_state) = create_signal(0);
 
+    let next_form_state = move |_ :MouseEvent| set_form_state.update(|form_state| *form_state += 1);
+
 
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
@@ -51,10 +54,10 @@ pub fn SimulacroFacil() -> impl IntoView {
                     <div class="text-center">
                         <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">"40:00:00"</h1>
                         {
-                            match form_state.get() {
+                            move || match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
                                 1 => {
-                                    let question = &questions[q_index.get()];
+                                    let question = &questions()[q_index.get()];
                                     view! {<p>{&question.title}</p>}.into_view()
                                 }, 
                                 2 => view! {<p>"Felicitaciones, terminaste el simulacro. Este es tu puntaje: 100%"</p>}.into_view(),
@@ -64,12 +67,12 @@ pub fn SimulacroFacil() -> impl IntoView {
                         }                        
                         <div class="mt-10 grid grid-cols-1 gap-y-6">
                         {
-                            match form_state.get() {
+                            move || match form_state.get() {
                                 0 => view! {
-                                    <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
+                                    <button on:click=next_form_state class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
                                 }.into_view(),
                                 1 => {
-                                    let question = &questions[q_index.get()];
+                                    let question = &questions()[q_index.get()];
                                     view! {<p>{&question.title}</p>}.into_view()
                                 }, 
                                 2 => view! {
