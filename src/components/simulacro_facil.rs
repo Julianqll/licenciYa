@@ -51,7 +51,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                     <div class="text-center">
                         <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">"40:00:00"</h1>
                         {
-                            move ||  match form_state.get() {
+                            match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
                                 1 => {
                                     let question = &questions[q_index.get()];
@@ -62,11 +62,23 @@ pub fn SimulacroFacil() -> impl IntoView {
                             }
                         
                         }                        
-                    <div class="mt-10 grid grid-cols-1 gap-y-6">
-                            <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta uno</button>
-                            <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta dos</button>
-                            <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta tres</button>
-                            <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Respuesta cuatro</button>
+                        <div class="mt-10 grid grid-cols-1 gap-y-6">
+                        {
+                            match form_state.get() {
+                                0 => view! {
+                                    <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
+                                }.into_view(),
+                                1 => {
+                                    let question = &questions[q_index.get()];
+                                    view! {<p>{&question.title}</p>}.into_view()
+                                }, 
+                                2 => view! {
+                                    <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Regresar al inicio</button>
+                                }.into_view(),
+                                _ => view! {<p></p>}.into_view()
+                            }
+                        
+                        } 
                         </div>
                     </div>
                     </div>
