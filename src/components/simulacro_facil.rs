@@ -36,9 +36,24 @@ pub fn SimulacroFacil() -> impl IntoView {
     
     let (q_index, set_q_index) = create_signal(0);
     let (form_state, set_form_state) = create_signal(0);
+    let (points, set_points) = create_signal(0);
 
     let next_form_state = move |_ :MouseEvent| set_form_state.update(|form_state| *form_state += 1);
 
+    let next_q_index = move |is_correct :bool| move |_ :MouseEvent| {
+        set_q_index.update(|q_index| *q_index += 1);
+        if is_correct.to_owned()
+        {
+            set_points.update(|points| *points += 1);
+        }
+    };
+
+    create_effect(move |_| {
+        if q_index.get() == 3
+        {
+            set_form_state.update(|form_state| *form_state += 1);
+        }
+      });
 
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
@@ -60,7 +75,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                                     let question = &questions()[q_index.get()];
                                     view! {<p>{&question.title}</p>}.into_view()
                                 }, 
-                                2 => view! {<p>"Felicitaciones, terminaste el simulacro. Este es tu puntaje: 100%"</p>}.into_view(),
+                                2 => view! {<p>"Felicitaciones, terminaste el simulacro. Este es tu puntaje:" {move || points.get()}</p>}.into_view(),
                                 _ => view! {<p></p>}.into_view()
                             }
                         
@@ -69,21 +84,21 @@ pub fn SimulacroFacil() -> impl IntoView {
                         {
                             move || match form_state.get() {
                                 0 => view! {
-                                    <button on:click=next_form_state class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
+                                    <button on:click=next_form_state class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
                                 }.into_view(),
                                 1 => {
                                     let question = &questions()[q_index.get()];
                                     let view_answers  = question.answerList.clone().into_iter()
                                     .map(|answer| view! 
                                         {
-                                            <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{answer.body}</button>
+                                            <button on:click=next_q_index({answer.isCorrect}) class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue  px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{answer.body}</button>
                                         })
                                         .collect::<Vec<_>>();
     
                                     view! { {view_answers}  }.into_view()
                                 }, 
                                 2 => view! {
-                                    <button class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Regresar al inicio</button>
+                                    <a href="/#simulacro" class="rounded-md bg-licenciya-blue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">"Regresar al inicio"</a>
                                 }.into_view(),
                                 _ => view! {<p></p>}.into_view()
                             }

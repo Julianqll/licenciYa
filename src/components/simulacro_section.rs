@@ -8,16 +8,19 @@ pub fn SimulacroSection() -> impl IntoView {
             "Fácil",
             "Si te equivocas no hay problema, te mostraremos la respuesta correcta",
             "bg-[#4CAF50]",
+            "facil"
         ),
         (
             "Medio",
             "Podrás tener 5 checkpoints durante el examen, pero solo podrás equivocarte 5 veces",
             "bg-[#ebba27]",
+            "medio"
         ),
         (
-            "Díficil",
+            "Difícil",
             "Si te equivocas, vuelvas a empezar el examen con el tiempo restante",
-            "bg-[#F44336]"
+            "bg-[#F44336]",
+            "dificil"
         )
     ];
 
@@ -33,10 +36,10 @@ pub fn SimulacroSection() -> impl IntoView {
           <div class="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-4xl">
             <dl class="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-3 lg:gap-y-16">
             {levels.into_iter()
-                .map(|(name, description, color)| view! 
+                .map(|(name, description, color, param)| view! 
                     {
                         <div key={name} class="relative py-10">
-                        <a href="#" class=format!("rounded-md px-3.5 py-2.5 my-5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 {}", color)>
+                        <a href=format!("/simulacro/{}", param) class=format!("rounded-md px-3.5 py-2.5 my-5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 {}", color)>
                             {name}
                         </a>
                         <dd class="mt-2 text-base leading-7 text-gray-600">{description}</dd>
