@@ -8,6 +8,7 @@ mod pages;
 mod api;
 mod resources;
 
+use crate::components::simulacro_facil::SimulacroFacil;
 // Top-Level pages
 use crate::pages::home::Home;
 use crate::pages::not_found::NotFound;
@@ -20,6 +21,7 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
+        <Router>
 
         // injects info into HTML tag from application code
         <Html
@@ -52,14 +54,14 @@ pub fn App() -> impl IntoView {
                 </ul>
             }
         >
-            <Router>
                 <Routes>
                     <Route path="/" view=Home />
-                    <Route path="/simulacro/:type" view=Simulacro />
-                    <Route path="/*" view=NotFound />
+                    <Route path="/simulacro/facil" view=SimulacroFacil />
+                    <Route path="/*any" view=NotFound />
                 </Routes>
-            </Router>
 
         </ErrorBoundary>
+        </Router>
+
     }
 }
