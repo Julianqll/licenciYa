@@ -8,7 +8,6 @@ mod pages;
 mod api;
 mod resources;
 
-use crate::components::simulacro_facil::SimulacroFacil;
 // Top-Level pages
 use crate::pages::home::Home;
 use crate::pages::not_found::NotFound;
@@ -56,7 +55,7 @@ pub fn App() -> impl IntoView {
         >
                 <Routes>
                     <Route path="/" view=Home />
-                    <Route path="/simulacro/facil" view=SimulacroFacil />
+                    <Route path="/simulacro/:type" view=Simulacro />
                     <Route path="/*any" view=NotFound />
                 </Routes>
 
