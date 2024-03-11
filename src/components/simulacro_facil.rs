@@ -1,5 +1,7 @@
 use leptos::*;
 use web_sys::MouseEvent;
+use gloo_timers::future::TimeoutFuture;
+
 
 use crate::{api::preguntas::preguntas, resources::question::Question};
 /// A parameterized incrementing button
@@ -38,7 +40,15 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (form_state, set_form_state) = create_signal(0);
     let (points, set_points) = create_signal(0);
 
-    let next_form_state = move |_ :MouseEvent| set_form_state.update(|form_state| *form_state += 1);
+    let(timer_seconds, set_timer_seconds) = create_signal(0);
+    let(timer_minutes, set_timer_minutes) = create_signal(2);
+
+
+    let start_exam= move |_ :MouseEvent| {
+        set_timer_seconds.set(60);
+        set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
+        set_form_state.update(|form_state| *form_state += 1);
+    };
 
     let next_q_index = move |is_correct :bool| move |_ :MouseEvent| {
         set_q_index.update(|q_index| *q_index += 1);
@@ -49,11 +59,49 @@ pub fn SimulacroFacil() -> impl IntoView {
     };
 
     create_effect(move |_| {
+        //change to real number of questions
         if q_index.get() == 3
         {
             set_form_state.update(|form_state| *form_state += 1);
         }
       });
+
+
+    let update_action = {
+        let set_timer_seconds = set_timer_seconds.clone();
+        create_action(move |_input: &()| async move {
+            TimeoutFuture::new(1000).await; 
+            set_timer_seconds.set(timer_seconds());
+        })
+    };
+    
+
+      //timer effecn 
+      let update_action_clone = update_action.clone(); 
+
+      create_effect(move |_| {
+        // immediately prints "Value: 0" and subscribes to `a`
+        if timer_seconds.get() > 0 {
+            set_timer_seconds.update(|seconds| *seconds -= 1);           
+            update_action_clone.dispatch(());
+        }    
+        else 
+        {
+            if timer_minutes.get() < 2 && timer_minutes.get() > 0 {
+                set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
+                set_timer_seconds.set(59);
+                update_action_clone.dispatch(());
+            }
+        }  
+    });
+
+    pub fn time_formater(time_string :i32) -> String {
+        if time_string < 10
+        {
+            return format!("0{}", time_string);
+        }
+        format!("{}", time_string)
+    }
 
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
@@ -67,7 +115,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                         </div>
                     </div>
                     <div class="text-center">
-                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">"40:00:00"</h1>
+                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">"00:"{move || time_formater(timer_minutes.get())} ":" {move || time_formater(timer_seconds.get())}</h1>
                         {
                             move || match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
@@ -84,7 +132,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                         {
                             move || match form_state.get() {
                                 0 => view! {
-                                    <button on:click=next_form_state class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
+                                    <button on:click=start_exam class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
                                 }.into_view(),
                                 1 => {
                                     let question = &questions()[q_index.get()];
