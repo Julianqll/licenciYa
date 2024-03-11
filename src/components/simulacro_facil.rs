@@ -40,7 +40,6 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (form_state, set_form_state) = create_signal(0);
     let (points, set_points) = create_signal(0);
 
-    let(timer_miliseconds, set_timer_miliseconds) = create_signal(0);
     let(timer_seconds, set_timer_seconds) = create_signal(0);
     let(timer_minutes, set_timer_minutes) = create_signal(40);
 
@@ -48,7 +47,8 @@ pub fn SimulacroFacil() -> impl IntoView {
     let next_form_state = move |_ :MouseEvent| set_form_state.update(|form_state| *form_state += 1);
 
     let start_exam= move |_ :MouseEvent| {
-        set_timer_miliseconds.set(99);
+        set_timer_seconds.set(60);
+        set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
         set_form_state.update(|form_state| *form_state += 1);
     };
 
@@ -68,32 +68,35 @@ pub fn SimulacroFacil() -> impl IntoView {
         }
       });
 
-      let efectazo = {
-        let set_timer_miliseconds = set_timer_miliseconds.clone();
-        create_action(move |input: &()| async move {
-            TimeoutFuture::new(100).await; // Pausa de 100 milisegundos entre iteraciones
-            set_timer_miliseconds.set(timer_miliseconds.get());
+
+    let update_action = {
+        let set_timer_seconds = set_timer_seconds.clone();
+        create_action(move |_input: &()| async move {
+            TimeoutFuture::new(1000).await; 
+            set_timer_seconds.set(timer_seconds());
         })
     };
     
 
       //timer effecn 
-      let efectazo_clone = efectazo.clone(); // Clonamos efectazo para poder moverlo dentro del cierre
+      let update_action_clone = update_action.clone(); 
 
       create_effect(move |_| {
         // immediately prints "Value: 0" and subscribes to `a`
-        if timer_miliseconds() >= 1 {
-            set_timer_miliseconds.update(|m| *m += 1);           
-
-            efectazo_clone.dispatch(()); // Llama a efectazo dentro de un contexto asíncrono
-
-            log::debug!("Hola");
-        }      
+        if timer_seconds.get() > 0 {
+            set_timer_seconds.update(|seconds| *seconds -= 1);           
+            update_action_clone.dispatch(());
+        }    
+        else 
+        {
+            if timer_minutes.get() < 40 && timer_minutes.get() > 0 {
+                set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
+                set_timer_seconds.set(59);
+                update_action_clone.dispatch(());
+            }
+        }  
     });
 
-      
-    
-    
     
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
@@ -107,7 +110,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                         </div>
                     </div>
                     <div class="text-center">
-                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">{move || timer_minutes.get()} ":" {move || timer_seconds.get()} ":" {move ||timer_miliseconds.get()}</h1>
+                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">{move || timer_minutes.get()} ":" {move || timer_seconds.get()}</h1>
                         {
                             move || match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
