@@ -1,5 +1,7 @@
 use leptos::*;
 use web_sys::MouseEvent;
+use gloo_timers::future::TimeoutFuture;
+
 
 use crate::{api::preguntas::preguntas, resources::question::Question};
 /// A parameterized incrementing button
@@ -38,7 +40,17 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (form_state, set_form_state) = create_signal(0);
     let (points, set_points) = create_signal(0);
 
+    let(timer_miliseconds, set_timer_miliseconds) = create_signal(0);
+    let(timer_seconds, set_timer_seconds) = create_signal(0);
+    let(timer_minutes, set_timer_minutes) = create_signal(40);
+
+
     let next_form_state = move |_ :MouseEvent| set_form_state.update(|form_state| *form_state += 1);
+
+    let start_exam= move |_ :MouseEvent| {
+        set_timer_miliseconds.set(99);
+        set_form_state.update(|form_state| *form_state += 1);
+    };
 
     let next_q_index = move |is_correct :bool| move |_ :MouseEvent| {
         set_q_index.update(|q_index| *q_index += 1);
@@ -49,12 +61,40 @@ pub fn SimulacroFacil() -> impl IntoView {
     };
 
     create_effect(move |_| {
+        //change to real number of questions
         if q_index.get() == 3
         {
             set_form_state.update(|form_state| *form_state += 1);
         }
       });
 
+      let efectazo = {
+        let set_timer_miliseconds = set_timer_miliseconds.clone();
+        create_action(move |input: &()| async move {
+            TimeoutFuture::new(100).await; // Pausa de 100 milisegundos entre iteraciones
+            set_timer_miliseconds.set(timer_miliseconds.get());
+        })
+    };
+    
+
+      //timer effecn 
+      let efectazo_clone = efectazo.clone(); // Clonamos efectazo para poder moverlo dentro del cierre
+
+      create_effect(move |_| {
+        // immediately prints "Value: 0" and subscribes to `a`
+        if timer_miliseconds() >= 1 {
+            set_timer_miliseconds.update(|m| *m += 1);           
+
+            efectazo_clone.dispatch(()); // Llama a efectazo dentro de un contexto asíncrono
+
+            log::debug!("Hola");
+        }      
+    });
+
+      
+    
+    
+    
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
             <div class="bg-white h-full">
@@ -67,7 +107,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                         </div>
                     </div>
                     <div class="text-center">
-                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">"40:00:00"</h1>
+                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">{move || timer_minutes.get()} ":" {move || timer_seconds.get()} ":" {move ||timer_miliseconds.get()}</h1>
                         {
                             move || match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
@@ -84,7 +124,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                         {
                             move || match form_state.get() {
                                 0 => view! {
-                                    <button on:click=next_form_state class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
+                                    <button on:click=start_exam class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
                                 }.into_view(),
                                 1 => {
                                     let question = &questions()[q_index.get()];
