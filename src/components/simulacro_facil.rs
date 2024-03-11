@@ -41,7 +41,7 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (points, set_points) = create_signal(0);
 
     let(timer_seconds, set_timer_seconds) = create_signal(0);
-    let(timer_minutes, set_timer_minutes) = create_signal(40);
+    let(timer_minutes, set_timer_minutes) = create_signal(2);
 
 
     let start_exam= move |_ :MouseEvent| {
@@ -87,7 +87,7 @@ pub fn SimulacroFacil() -> impl IntoView {
         }    
         else 
         {
-            if timer_minutes.get() < 40 && timer_minutes.get() > 0 {
+            if timer_minutes.get() < 2 && timer_minutes.get() > 0 {
                 set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
                 set_timer_seconds.set(59);
                 update_action_clone.dispatch(());
@@ -95,7 +95,14 @@ pub fn SimulacroFacil() -> impl IntoView {
         }  
     });
 
-    
+    pub fn time_formater(time_string :i32) -> String {
+        if time_string < 10
+        {
+            return format!("0{}", time_string);
+        }
+        format!("{}", time_string)
+    }
+
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
             <div class="bg-white h-full">
@@ -108,7 +115,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                         </div>
                     </div>
                     <div class="text-center">
-                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">{move || timer_minutes.get()} ":" {move || timer_seconds.get()}</h1>
+                        <h1 class="text-3xl font-bold tracking-tight mb-5 text-gray-900 md:text-5xl sm:text-6xl">"00:"{move || time_formater(timer_minutes.get())} ":" {move || time_formater(timer_seconds.get())}</h1>
                         {
                             move || match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
