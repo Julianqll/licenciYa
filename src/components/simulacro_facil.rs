@@ -44,8 +44,6 @@ pub fn SimulacroFacil() -> impl IntoView {
     let(timer_minutes, set_timer_minutes) = create_signal(40);
 
 
-    let next_form_state = move |_ :MouseEvent| set_form_state.update(|form_state| *form_state += 1);
-
     let start_exam= move |_ :MouseEvent| {
         set_timer_seconds.set(60);
         set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
