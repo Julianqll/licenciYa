@@ -129,7 +129,20 @@ pub fn SimulacroFacil() -> impl IntoView {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
                                 1 => {
                                     let question = &questions()[q_index.get()];
-                                    view! {<p>{q_index.get() + 1}. {&question.title}</p>}.into_view()
+                                    if question.image != None
+                                    {
+                                        view! {
+                                            <div class="place-items-center">
+                                                <p>{q_index.get() + 1}. {&question.title}</p>
+                                                <img loading="lazy" src={question.image.clone().unwrap()}
+                                                class="mx-auto mt-5"/>
+                                            </div>
+                                        }.into_view()
+                                    }
+                                    else
+                                    {
+                                        view! {<p>{q_index.get() + 1}. {&question.title}</p>}.into_view()
+                                    }
                                 }, 
                                 2 => view! {<p>"Felicitaciones, terminaste el simulacro. Este es tu puntaje:" {move || points.get()}</p>}.into_view(),
                                 _ => view! {<p></p>}.into_view()
