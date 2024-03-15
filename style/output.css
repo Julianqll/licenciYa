@@ -694,6 +694,10 @@ video {
   margin-top: 0.5rem;
 }
 
+.mt-4 {
+  margin-top: 1rem;
+}
+
 .mt-6 {
   margin-top: 1.5rem;
 }
@@ -760,6 +764,10 @@ video {
 
 .max-w-xl {
   max-width: 36rem;
+}
+
+.flex-grow {
+  flex-grow: 1;
 }
 
 .grid-cols-1 {
@@ -1124,6 +1132,10 @@ video {
 
   .sm\:mt-20 {
     margin-top: 5rem;
+  }
+
+  .sm\:mt-8 {
+    margin-top: 2rem;
   }
 
   .sm\:flex {

@@ -113,10 +113,10 @@ pub fn SimulacroFacil() -> impl IntoView {
 
     view! {
         <div class="min-h-screen overflow-auto flex flex-col">
-            <div class="bg-white h-full">
+            <div class="px-6 lg:px-8 flex-grow flex items-center justify-center">
                 //sección
-                <div id="home" class="relative isolate px-6 lg:px-8 h-screen flex justify-center items-center">
-                    <div class="mx-auto max-w-2xl py-32 my-60 sm:py-48 lg:py-24">
+                <div id="home" class="max-w-2xl mx-auto">
+                    <div class="mx-auto max-w-2xl mt-4 sm:mt-8">
                     <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                         <div class="relative rounded-full px-3 py-1 text-sm leading-6 text-licenciya-blue ring-1 ring-gray-900/10 hover:ring-gray-900/20">
                         Nivel Fácil
