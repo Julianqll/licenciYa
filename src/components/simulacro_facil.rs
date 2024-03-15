@@ -69,15 +69,6 @@ pub fn SimulacroFacil() -> impl IntoView {
         }
     };
 
-    //create_effect(move |_| {
-    //    //change to real number of questions
-    //    if q_index.get() == 40
-    //    {
-    //        set_form_state.update(|form_state| *form_state += 1);
-    //    }
-    //  });
-
-
     let update_action = {
         let set_timer_seconds = set_timer_seconds.clone();
         create_action(move |_input: &()| async move {
