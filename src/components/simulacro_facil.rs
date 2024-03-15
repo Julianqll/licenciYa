@@ -41,7 +41,7 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (points, set_points) = create_signal(0);
 
     let(timer_seconds, set_timer_seconds) = create_signal(0);
-    let(timer_minutes, set_timer_minutes) = create_signal(2);
+    let(timer_minutes, set_timer_minutes) = create_signal(40);
 
 
     let start_exam= move |_ :MouseEvent| {
@@ -51,20 +51,31 @@ pub fn SimulacroFacil() -> impl IntoView {
     };
 
     let next_q_index = move |is_correct :bool| move |_ :MouseEvent| {
-        set_q_index.update(|q_index| *q_index += 1);
-        if is_correct.to_owned()
+        if q_index.get() < 39
         {
-            set_points.update(|points| *points += 1);
+            set_q_index.update(|q_index| *q_index += 1);
+            if is_correct.to_owned()
+            {
+                set_points.update(|points| *points += 1);
+            }
+        }
+        else if q_index.get() == 39
+        {
+            if is_correct.to_owned()
+            {
+                set_points.update(|points| *points += 1);
+            }
+            set_form_state.update(|form_state| *form_state += 1);
         }
     };
 
-    create_effect(move |_| {
-        //change to real number of questions
-        if q_index.get() == 3
-        {
-            set_form_state.update(|form_state| *form_state += 1);
-        }
-      });
+    //create_effect(move |_| {
+    //    //change to real number of questions
+    //    if q_index.get() == 40
+    //    {
+    //        set_form_state.update(|form_state| *form_state += 1);
+    //    }
+    //  });
 
 
     let update_action = {
@@ -87,7 +98,7 @@ pub fn SimulacroFacil() -> impl IntoView {
         }    
         else 
         {
-            if timer_minutes.get() < 2 && timer_minutes.get() > 0 {
+            if timer_minutes.get() < 40 && timer_minutes.get() > 0 {
                 set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
                 set_timer_seconds.set(59);
                 update_action_clone.dispatch(());
@@ -121,7 +132,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
                                 1 => {
                                     let question = &questions()[q_index.get()];
-                                    view! {<p>{&question.title}</p>}.into_view()
+                                    view! {<p>{q_index.get() + 1}. {&question.title}</p>}.into_view()
                                 }, 
                                 2 => view! {<p>"Felicitaciones, terminaste el simulacro. Este es tu puntaje:" {move || points.get()}</p>}.into_view(),
                                 _ => view! {<p></p>}.into_view()
