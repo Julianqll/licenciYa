@@ -41,7 +41,7 @@ pub fn SimulacroFacil() -> impl IntoView {
     let (points, set_points) = create_signal(0);
 
     let(timer_seconds, set_timer_seconds) = create_signal(0);
-    let(timer_minutes, set_timer_minutes) = create_signal(40);
+    let(timer_minutes, set_timer_minutes) = create_signal(1);
 
 
     let start_exam= move |_ :MouseEvent| {
@@ -91,10 +91,14 @@ pub fn SimulacroFacil() -> impl IntoView {
         }    
         else 
         {
-            if timer_minutes.get() < 40 && timer_minutes.get() > 0 {
+            if timer_minutes.get() < 1 && timer_minutes.get() > 0 {
                 set_timer_minutes.update(|minutes: &mut i32| *minutes -= 1);           
                 set_timer_seconds.set(59);
                 update_action_clone.dispatch(());
+            }
+            else if timer_minutes.get() == 0
+            {
+                set_form_state.update(|form_state| *form_state += 1);
             }
         }  
     });
