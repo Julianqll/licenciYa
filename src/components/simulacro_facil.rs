@@ -65,7 +65,6 @@ pub fn SimulacroFacil() -> impl IntoView {
             {
                 set_points.update(|points| *points += 1);
             }
-            set_form_state.update(|form_state| *form_state += 1);
             set_timer_minutes.set(0);
             set_timer_seconds.set(0);
         }
@@ -98,7 +97,10 @@ pub fn SimulacroFacil() -> impl IntoView {
             }
             else if timer_minutes.get() == 0
             {
-                set_form_state.update(|form_state| *form_state += 1);
+                if form_state.get() < 2
+                {
+                    set_form_state.update(|form_state| *form_state += 1);
+                }
             }
         }  
     });
