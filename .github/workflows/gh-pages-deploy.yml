@@ -51,6 +51,10 @@ jobs:
       - name: Download and install Trunk binary
         run: wget -qO- https://github.com/trunk-rs/trunk/releases/download/v0.18.4/trunk-x86_64-unknown-linux-gnu.tar.gz | tar -xzf-
 
+    # Add environment variable from secret to .env file
+      - name: Create .env file with secret
+        run: echo "APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT }}" > .env
+
       - name: Build with Trunk
         # "${GITHUB_REPOSITORY#*/}" evaluates into the name of the repository
         # using --public-url something will allow trunk to modify all the href paths like from favicon.ico to repo_name/favicon.ico .
@@ -58,10 +62,6 @@ jobs:
         # relatively as favicon.ico. if we skip public-url option, the href paths will instead request username.github.io/favicon.ico which
         # will obviously return error 404 not found.
         run: ./trunk build --release --public-url "${GITHUB_REPOSITORY#*/}"
-    
-    # Add environment variable from secret to .env file
-      - name: Create .env file with secret
-        run: echo "APP_API_ENDPOINT=${{ secrets.APP_API_ENDPOINT }}" > .env
 
       # Deploy to gh-pages branch
       # - name: Deploy 🚀
