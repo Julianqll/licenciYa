@@ -7,6 +7,7 @@ mod components;
 mod pages;
 mod api;
 mod resources;
+mod env;
 
 // Top-Level pages
 use crate::pages::home::Home;

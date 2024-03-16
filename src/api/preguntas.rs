@@ -2,13 +2,15 @@ use wasm_bindgen::prelude::*;
 use wasm_bindgen_futures::JsFuture;
 use web_sys::{Request, RequestInit, RequestMode, Response};
 
+use crate::env;
+
 #[wasm_bindgen]
-pub async fn preguntas(repo: String) -> Result<String, JsValue> {
+pub async fn preguntas(endpoint: String) -> Result<String, JsValue> {
     let mut opts = RequestInit::new();
     opts.method("GET");
     opts.mode(RequestMode::Cors);
-
-    let url = format!("http://localhost:5160/api/{}", repo);
+    
+    let url = format!("{}/{}", env::APP_API_ENDPOINT, endpoint);
 
     let request = Request::new_with_str_and_init(&url, &opts)?;
 
