@@ -3,7 +3,7 @@ use web_sys::MouseEvent;
 use gloo_timers::future::TimeoutFuture;
 
 
-use crate::{api::preguntas::preguntas, resources::question::Question};
+use crate::{api::preguntas::preguntas, env, resources::question::Question};
 /// A parameterized incrementing button
 #[component]
 pub fn SimulacroFacil() -> impl IntoView {
@@ -167,7 +167,7 @@ pub fn SimulacroFacil() -> impl IntoView {
                                     view! { {view_answers}  }.into_view()
                                 }, 
                                 2 => view! {
-                                    <a href="/#simulacro" class="rounded-md bg-licenciya-blue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">"Regresar al inicio"</a>
+                                    <a href=format!("{}#simulacro", env::APP_PUBLIC_URL) class="rounded-md bg-licenciya-blue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">"Regresar al inicio"</a>
                                 }.into_view(),
                                 _ => view! {<p></p>}.into_view()
                             }
