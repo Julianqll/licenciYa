@@ -130,20 +130,25 @@ pub fn SimulacroFacil() -> impl IntoView {
                             move || match form_state.get() {
                                 0 => view! {<p>"Aquí iran apareciendo las preguntas y debajo las preguntas. Para iniciar el examen solo da clic a Iniciar"</p>}.into_view(),
                                 1 => {
-                                    let question = &questions()[q_index.get()];
-                                    if question.image != None
-                                    {
-                                        view! {
-                                            <div class="place-items-center">
-                                                <p>{q_index.get() + 1}. {&question.title}</p>
-                                                <img loading="lazy" src={question.image.clone().unwrap()}
-                                                class="mx-auto mt-5"/>
-                                            </div>
-                                        }.into_view()
-                                    }
-                                    else
-                                    {
-                                        view! {<p>{q_index.get() + 1}. {&question.title}</p>}.into_view()
+                                    match &questions().as_slice() {
+                                        [] => view! { <p>"Loading..."</p> }.into_view(),
+                                        _ => {
+                                            let question = &questions()[q_index.get()];
+                                            if question.image != None
+                                            {
+                                                view! {
+                                                    <div class="place-items-center">
+                                                        <p>{q_index.get() + 1}. {&question.title}</p>
+                                                        <img loading="lazy" src={question.image.clone().unwrap()}
+                                                        class="mx-auto mt-5"/>
+                                                    </div>
+                                                }.into_view()
+                                            }
+                                            else
+                                            {
+                                                view! {<p>{q_index.get() + 1}. {&question.title}</p>}.into_view()
+                                            }
+                                        }
                                     }
                                 }, 
                                 2 => view! {<p>"Felicitaciones, terminaste el simulacro. Este es tu puntaje:" {move || points.get()}</p>}.into_view(),
@@ -158,15 +163,21 @@ pub fn SimulacroFacil() -> impl IntoView {
                                     <button on:click=start_exam class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">"¡Iniciar!"</button>
                                 }.into_view(),
                                 1 => {
-                                    let question = &questions()[q_index.get()];
-                                    let view_answers  = question.answerList.clone().into_iter()
-                                    .map(|answer| view! 
-                                        {
-                                            <button on:click=next_q_index({answer.isCorrect}) class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue  px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{answer.body}</button>
-                                        })
-                                        .collect::<Vec<_>>();
-    
-                                    view! { {view_answers}  }.into_view()
+                                     match &questions().as_slice() {
+                                        [] => view! { <p>"Loading..."</p> }.into_view(),
+                                        _ => {
+                                             let question = &questions()[q_index.get()];
+                                            let view_answers  = question.answerList.clone().into_iter()
+                                            .map(|answer| view! 
+                                                {
+                                                    <button on:click=next_q_index({answer.isCorrect}) class="flex items-center justify-center rounded-md border border-transparent bg-licenciya-blue  px-8 py-3 text-base font-medium text-white hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{answer.body}</button>
+                                                })
+                                                .collect::<Vec<_>>();
+            
+                                            view! { {view_answers}  }.into_view()
+                                        }
+                                    
+                                    }
                                 }, 
                                 2 => view! {
                                     <a href=format!("{}#simulacro", env::APP_PUBLIC_URL) class="rounded-md bg-licenciya-blue px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">"Regresar al inicio"</a>
