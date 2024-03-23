@@ -29,9 +29,7 @@ pub fn App() -> impl IntoView {
             dir="ltr"
             attr:data-theme="light"
         />
-        <head>
-            <base data-trunk-public-url/>
-        </head>
+
         // sets the document title
         <Title text="Licenciya"/>
         <Stylesheet id="leptos" href="/style/output.css"/>
