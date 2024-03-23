@@ -56,9 +56,9 @@ pub fn App() -> impl IntoView {
         >
                 <main>
                 <Routes>
-                    <Route path="" view=Home />
-                    <Route path=":type" view=|| view! {<Simulacro/>} />
-                    <Route path="*any" view=NotFound />
+                    <Route path=format!("{}/", env::APP_PUBLIC_URL) view=Home />
+                    <Route path=format!("{}/:type", env::APP_PUBLIC_URL) view=|| view! {<Simulacro/>} />
+                    <Route path=format!("{}/*any", env::APP_PUBLIC_URL) view=NotFound />
                 </Routes>
                 </main>
 
