@@ -29,7 +29,9 @@ pub fn App() -> impl IntoView {
             dir="ltr"
             attr:data-theme="light"
         />
-
+        <head>
+            <base data-trunk-public-url/>
+        </head>
         // sets the document title
         <Title text="Licenciya"/>
         <Stylesheet id="leptos" href="/style/output.css"/>
@@ -56,9 +58,9 @@ pub fn App() -> impl IntoView {
         >
                 <main>
                 <Routes>
-                    <Route path=format!("{}/", env::APP_PUBLIC_URL) view=Home />
-                    <Route path=format!("{}/:type", env::APP_PUBLIC_URL) view=|| view! {<Simulacro/>} />
-                    <Route path=format!("{}/*any", env::APP_PUBLIC_URL) view=NotFound />
+                    <Route path="" view=Home />
+                    <Route path=":type" view=|| view! {<Simulacro/>} />
+                    <Route path="*any" view=NotFound />
                 </Routes>
                 </main>
 

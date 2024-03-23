@@ -41,7 +41,7 @@ pub fn SimulacroSection() -> impl IntoView {
                 .map(|(name, description, color, param)| view! 
                     {
                         <div key={name} class="relative py-10">
-                        <a href=format!("{}simulacro/{}", env::APP_PUBLIC_URL, param) class=format!("rounded-md px-3.5 py-2.5 my-5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 {}", color)>
+                        <a href=format!("{}", param) class=format!("rounded-md px-3.5 py-2.5 my-5 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 {}", color)>
                             {name}
                         </a>
                         <dd class="mt-2 text-base leading-7 text-gray-600">{description}</dd>
