@@ -3,8 +3,7 @@
   <head>
     <!-- Add a plain CSS file: see https://trunkrs.dev/assets/#css -->
     <!-- If using Tailwind with Leptos CSR, see https://trunkrs.dev/assets/#tailwind instead-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <link data-trunk rel="css" href="/style/output.css" />
 
     <!-- Include favicon in dist output: see https://trunkrs.dev/assets/#icon -->
@@ -13,10 +12,9 @@
     <link data-trunk rel="copy-dir" href="assets">
 
     <!-- include support for `wasm-bindgen --weak-refs` - see: https://rustwasm.github.io/docs/wasm-bindgen/reference/weak-references.html -->
-    <link data-trunk rel="rust" data-wasm-opt="z" />
-    <title>LicenciYa</title>
+    <link data-trunk rel="rust" data-wasm-opt="z" data-weak-refs />
 
-    <!-- <base data-trunk-public-url/> -->
+    <base data-trunk-public-url/> 
   </head>
   <body></body>
 </html>

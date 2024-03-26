@@ -21,14 +21,48 @@ pub fn App() -> impl IntoView {
     provide_meta_context();
 
     view! {
-
-        <Stylesheet id="leptos" href="/style/output.css"/>
         <Router>
+
+        // injects info into HTML tag from application code
+        <Html
+            lang="en"
+            dir="ltr"
+            attr:data-theme="light"
+        />
+
+        // sets the document title
+        <Title text="Licenciya"/>
+        <Stylesheet id="leptos" href="/style/output.css"/>
+
+        // injects metadata in the <head> of the page
+        <Meta charset="UTF-8" />
+        <Meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+        <ErrorBoundary
+            fallback=|errors| view! {
+                <h1>"Uh oh! Something went wrong!"</h1>
+
+                <p>"Errors: "</p>
+                // Render a list of errors as strings - good for development purposes
+                <ul>
+                    {move || errors.get()
+                        .into_iter()
+                        .map(|(_, e)| view! { <li>{e.to_string()}</li>})
+                        .collect_view()
+                    }
+                </ul>
+            }
+        >
+                <main>
                 <Routes>
                     <Route path=format!("{}/", env::APP_PUBLIC_URL) view=Home />
                     <Route path=format!("{}/:type", env::APP_PUBLIC_URL) view=|| view! {<Simulacro/>} />
                     <Route path=format!("{}/*any", env::APP_PUBLIC_URL) view=NotFound />
                 </Routes>
+                </main>
+
+        </ErrorBoundary>
         </Router>
 
     }
